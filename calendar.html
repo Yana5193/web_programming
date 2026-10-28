@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Календарь</title>
+    <style type="text/css">
+        th, td {
+            border: 1px solid black;
+            width: 40px;
+            height: 40px;
+            text-align: center;
+        }
+
+        th{
+            color: rgb(214, 20, 214);
+        }
+        #month-name{
+            color: rgb(109, 8, 99);
+        }
+            
+    </style>
+</head>
+<body>
+    <h1 id="month-name"></h1>
+    <div id="calendar"></div>
+    <script>
+        let title = document.getElementById('month-name');
+        let calendar = document.getElementById('calendar')
+        
+        let d = new Date();
+        let year = d.getFullYear();
+        let month = d.getMonth();
+        let currentMonth = d.toLocaleDateString('ru', { month: 'long' });
+
+        title.textContent = currentMonth + ' ' + year;
+        
+        let totalDays = new Date(year, month + 1, 0).getDate(); // сколько дней в месяце
+        let firstDayIndex = new Date(year, month, 1).getDay();
+        let dayofW = (firstDayIndex === 0) ? 6 : firstDayIndex - 1;
+        let count = 1;
+        let table = document.createElement('table');
+        let week=['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+        let w=document.createElement('tr');
+        for(let i=0;i<week.length;i++){
+            let th=document.createElement('th');
+            th.textContent=week[i];
+            w.append(th);
+        }
+        table.append(w)
+        // строки
+        for (let y = 0; y < 6; y++) {
+            let tr = document.createElement('tr');
+
+            // ячейки
+            for (let x = 0; x < 7; x++) {
+                let td = document.createElement('td');
+
+                if ((y == 0 && x < dayofW) || count > totalDays) {
+                    td.textContent = '';
+                } else {
+                    td.textContent = count;
+                    count++;
+                }
+                tr.append(td);
+            }
+            table.append(tr);
+
+            if (count > totalDays) {
+                break; 
+            }
+        }
+    calendar.append(table);
+    </script>
+</body>
+</html>
+
